@@ -50,8 +50,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.compose)
     val work_version = "2.9.1"
 
+    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -67,8 +69,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation("androidx.compose.material:material:1.5.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.work:work-runtime-ktx:$work_version")
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.13.1.202206130422-r")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.8")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.2")
+
 }

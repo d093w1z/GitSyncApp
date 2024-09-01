@@ -26,7 +26,7 @@ class GitSyncApp : Application() {
         WorkManager.getInstance(applicationContext)
             .enqueueUniquePeriodicWork(
                 "periodicGitSync",
-                ExistingPeriodicWorkPolicy.REPLACE,
+                ExistingPeriodicWorkPolicy.UPDATE,
                 periodicSyncRequest
             )
     }

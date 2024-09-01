@@ -3,8 +3,11 @@ package com.example.gitsyncapp
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
@@ -20,7 +23,6 @@ class GitSyncWorker(appContext: Context, workerParams: WorkerParameters) :
         Log.i(TAG, "started doing work.....")
         try {
             val sharedPrefs = applicationContext.getSharedPreferences("GitSyncPrefs", Context.MODE_PRIVATE)
-//            val localPath = File(applicationContext.filesDir, sharedPrefs.getString("local_path", "git-repo") ?: "git-repo")
             val remoteUrl = sharedPrefs.getString("remote_url", "") ?: ""
             val localPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"GitSync/"+sharedPrefs.getString("local_path", "git-repo"))
             val branch = sharedPrefs.getString("branch", "main") ?: "main"
@@ -48,11 +50,16 @@ class GitSyncWorker(appContext: Context, workerParams: WorkerParameters) :
             }
 
             sharedPrefs.edit().putLong("last_sync_time", System.currentTimeMillis()).apply()
+            setProgress(workDataOf(PROGRESS to 50))
             Log.i(TAG, "Completed!")
             Result.success()
         } catch (e: Exception) {
             Log.e(TAG, "Failed!", e)
             Result.failure()
         }
+    }
+
+    companion object {
+        const val PROGRESS = "PROGRESS"
     }
 }
