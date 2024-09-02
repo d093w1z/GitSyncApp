@@ -75,7 +75,7 @@ dependencies {
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.work:work-runtime-ktx:$work_version")
-    implementation("org.eclipse.jgit:org.eclipse.jgit:5.13.1.202206130422-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.8")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")

@@ -3,14 +3,13 @@ package com.example.gitsyncapp
 import android.content.Context
 import android.os.Environment
 import android.util.Log
-import androidx.activity.viewModels
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.merge.MergeStrategy
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import java.io.File
@@ -44,7 +43,17 @@ class GitSyncWorker(appContext: Context, workerParams: WorkerParameters) :
             } else {
                 val git = Git(FileRepositoryBuilder().setGitDir(File(localPath, ".git")).build())
                 git.pull()
+                    .setStrategy(MergeStrategy.THEIRS)
                     .setRemoteBranchName(branch)
+                    .setCredentialsProvider(UsernamePasswordCredentialsProvider(username, password))
+                    .call()
+                git.add()
+                    .addFilepattern("*")
+                    .call()
+                git.commit()
+                    .setMessage("vault backup")
+                    .call()
+                git.push()
                     .setCredentialsProvider(UsernamePasswordCredentialsProvider(username, password))
                     .call()
             }

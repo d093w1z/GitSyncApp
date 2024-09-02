@@ -15,24 +15,16 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.*
 import java.util.concurrent.TimeUnit
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "GitSyncMainActivity"
@@ -113,27 +105,27 @@ class MainActivity : AppCompatActivity() {
                         .fillMaxWidth()
                 )
             }
+            Row {
+                Button(
+                    onClick = {
+                        Log.d(TAG, "Settings button clicked")
+                        Intent(applicationContext, SettingsActivity::class.java).also {
+                            startActivity(it)
+                        }
+                    },
+                    modifier = Modifier.padding(end = 4.dp)
+                ) {
+                    Text(text = "Settings")
+                }
 
-            Button(
-                onClick = {
-                    Log.d(TAG, "Settings button clicked")
-                    Intent(applicationContext, SettingsActivity::class.java).also {
-                        startActivity(it)
-                    }
-                },
-                modifier = Modifier.padding(bottom = 4.dp)
-            ) {
-                Text(text = "Settings")
-            }
-
-            Button(
-                onClick = {
-                    Log.d(TAG, "Sync button clicked")
-                    scheduleSync()
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Sync now")
+                Button(
+                    onClick = {
+                        Log.d(TAG, "Sync button clicked")
+                        scheduleSync()
+                    },
+                ) {
+                    Text(text = "Sync now")
+                }
             }
 
             Button(
