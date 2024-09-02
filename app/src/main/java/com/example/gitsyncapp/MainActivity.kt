@@ -25,6 +25,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.Settings
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "GitSyncMainActivity"
@@ -44,7 +48,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
+        // Check if the permission is already granted
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                // Permission is not granted, request it
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.data = Uri.parse("package:${applicationContext.packageName}")
+                startActivityForResult(intent, REQUEST_MANAGE_EXTERNAL_STORAGE)
+            }
+        }
         try {
             setupWorkManagerObserver()
             schedulePeriodicSync()
@@ -54,6 +66,23 @@ class MainActivity : AppCompatActivity() {
             Log.e(TAG, "onCreate: Error setting up MainActivity", e)
             viewModel.updateLastSyncStatus("Error: Unable to set up the app")
         }
+    }
+    // Handle the result of the permission request
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_MANAGE_EXTERNAL_STORAGE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    // Permission granted
+                } else {
+                    // Permission denied
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_MANAGE_EXTERNAL_STORAGE = 1001
     }
 
     @Composable

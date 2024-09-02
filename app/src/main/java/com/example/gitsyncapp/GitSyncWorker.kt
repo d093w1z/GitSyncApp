@@ -20,6 +20,7 @@ class GitSyncWorker(appContext: Context, workerParams: WorkerParameters) :
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         Log.i(TAG, "started doing work.....")
+
         try {
             val sharedPrefs = applicationContext.getSharedPreferences("GitSyncPrefs", Context.MODE_PRIVATE)
             val remoteUrl = sharedPrefs.getString("remote_url", "") ?: ""
